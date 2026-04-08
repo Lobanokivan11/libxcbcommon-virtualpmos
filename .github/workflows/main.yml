@@ -43,6 +43,7 @@ jobs:
             -Denable-x11=false \
             -Denable-xkbregistry=false \
             -Dprefix=$GITHUB_WORKSPACE/output \
+            -Dx-locale-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/locale \
             -Dxkb-config-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/xkb
           meson compile -C build/
           meson install -C build/
