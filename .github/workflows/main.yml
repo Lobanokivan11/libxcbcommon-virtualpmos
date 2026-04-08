@@ -35,7 +35,6 @@ jobs:
       - name: Build and Install
         run: |
           cd libxkbcommon
-          # Путь к ndk-crossfile.txt должен быть относительным корня репозитория
           meson setup build/ \
             --cross-file ../ndk-crossfile.txt \
             -Denable-tools=false \
