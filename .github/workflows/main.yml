@@ -1,0 +1,55 @@
+name: Build libxkbcommon (Android NDK)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          pacman -Syu --noconfirm \
+          base-devel meson ninja clang llvm pkgconf python python-pip git unzip autoconf
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Android NDK
+        run: |
+          curl -LO https://dl.google.com/android/repository/android-ndk-r28-linux.zip
+          unzip -q android-ndk-r28-linux.zip
+          rm android-ndk-r28-linux.zip
+          echo "ANDROID_NDK_HOME=$GITHUB_WORKSPACE/android-ndk-r28" >> $GITHUB_ENV
+
+      - name: Clone libxkbcommon
+        run: git clone https://github.com/xkbcommon/libxkbcommon.git
+
+      - name: Build and Install
+        run: |
+          cd libxkbcommon
+          # Путь к ndk-crossfile.txt должен быть относительным корня репозитория
+          meson setup build/ \
+            --cross-file ../ndk-crossfile.txt \
+            -Denable-tools=false \
+            -Denable-x11=false \
+            -Denable-xkbregistry=false \
+            -Denable-bash-completion=false \
+            -Dxkb-config-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/xkb \
+            -Dx-locale-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/locale \
+            -Dprefix=$GITHUB_WORKSPACE/output
+          meson compile -C build/
+          meson install -C build/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: libxkbcommon-android-binaries
+          path: output/
