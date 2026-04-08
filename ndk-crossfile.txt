@@ -1,14 +1,14 @@
 [binaries]
-c = '/android-ndk-r28/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang'
-cpp = '/android-ndk-r28/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++'
-ar = '/android-ndk-r28/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar'
-strip = '/android-ndk-r28/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip'
-pkg-config = 'pkg-config'
+c = 'aarch64-linux-android26-clang'
+cpp = 'aarch64-linux-android26-clang++'
+ar = 'llvm-ar'
+strip = 'llvm-strip'
+pkgconfig = 'pkg-config'
 
 [host_machine]
 system = 'android'
 cpu_family = 'aarch64'
-cpu = 'aarch64'
+cpu = 'armv8-a'
 endian = 'little'
 
 [properties]
