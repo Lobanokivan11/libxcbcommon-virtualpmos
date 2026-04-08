@@ -34,16 +34,16 @@ jobs:
 
       - name: Build and Install
         run: |
+          export TOOLCHAIN=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin
+          export PATH=$TOOLCHAIN:$PATH
           cd libxkbcommon
           meson setup build/ \
             --cross-file ../ndk-crossfile.txt \
             -Denable-tools=false \
             -Denable-x11=false \
             -Denable-xkbregistry=false \
-            -Denable-bash-completion=false \
-            -Dxkb-config-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/xkb \
-            -Dx-locale-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/locale \
-            -Dprefix=$GITHUB_WORKSPACE/output
+            -Dprefix=$GITHUB_WORKSPACE/output \
+            -Dxkb-config-root=/data/data/app.virtualpmos/files/pmos/usr/share/X11/xkb
           meson compile -C build/
           meson install -C build/
 
